@@ -14,7 +14,7 @@ favorite-directories:cd() {
             find "$dir" -maxdepth "${depth:-1}" -type d \
                 -printf "$name: %P\\n"
         done
-    } | grep -Pv '^\w+: $' | fzf-tmux)
+    } | grep -Ev '^[[:alnum:]]+: $' | fzf-tmux)
 
     local token=${target_dir//:*/}
     local target_dir=${target_dir//*: /}
