@@ -11,10 +11,12 @@ favorite-directories:cd() {
         for source in "${sources[@]}"; do
             read -r name depth dir <<< "$source"
 
-            find "$dir" -maxdepth "${depth:-1}" -type d \
-                -printf "$name: %P\\n"
+            find "$dir" \
+                -maxdepth "${depth:-1}" \
+                -mindepth "1" \
+                -type d -printf "$name: %P\\n"
         done
-    } | grep -Ev '^[[:alnum:]]+: $' | fzf-tmux)
+    } | fzf-tmux)
 
     local token=${target_dir//:*/}
     local target_dir=${target_dir//*: /}
