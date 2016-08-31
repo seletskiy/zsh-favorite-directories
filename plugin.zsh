@@ -1,7 +1,6 @@
 favorite-directories:cd() {
     # eval prevents IFS to modify in global scope
     IFS=$'\n' eval 'local sources=($(favorite-directories:get))'
-    local on_cd="favorite-directories:on-cd"
 
     local name
     local depth
@@ -36,15 +35,14 @@ favorite-directories:cd() {
     unset target_dir
     unset token
 
-    $on_cd
+    for func in "${precmd_functions[@]}"; do
+        "$func"
+    done
+
+    zle reset-prompt
 }
 
 favorite-directories:get() {
-    :
-}
-
-
-favorite-directories:on-cd() {
     :
 }
 
