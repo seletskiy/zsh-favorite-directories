@@ -13,7 +13,8 @@ favorite-directories:cd() {
             find "$dir" \
                 -maxdepth "${depth:-1}" \
                 -mindepth "1" \
-                -type d -printf "$name: %P\\n"
+                -type d -printf "$name: %P\\n" \
+                2>/dev/null
         done
     } | fzf-tmux)
 
