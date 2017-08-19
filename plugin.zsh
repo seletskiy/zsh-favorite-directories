@@ -3,16 +3,17 @@ favorite-directories:cd() {
     IFS=$'\n' eval 'local sources=($(favorite-directories:get))'
 
     local name
-    local depth
+    local maxdepth
+    local mindepth
     local dir
 
     local target_dir=$({
         for source in "${sources[@]}"; do
-            read -r name depth dir <<< "$source"
+            read -r name maxdepth dir mindepth <<< "$source"
 
             find "$dir" \
-                -maxdepth "${depth:-1}" \
-                -mindepth "1" \
+                -maxdepth "${maxdepth:-1}" \
+                -mindepth "${mindepth:-1}" \
                 -type d -printf "$name: %P\\n" \
                 2>/dev/null
         done
@@ -22,7 +23,7 @@ favorite-directories:cd() {
     local target_dir=${target_dir//*: /}
 
     for source in "${sources[@]}"; do
-        read -r name depth dir <<< "$source"
+        read -r name maxdepth dir mindepth <<< "$source"
 
         if [ "$name" = "$token" ]; then
             eval cd "$dir/$target_dir"
@@ -31,7 +32,7 @@ favorite-directories:cd() {
     done
 
     unset sources
-    unset depth
+    unset maxdepth
     unset dir
     unset target_dir
     unset token
